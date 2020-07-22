@@ -11,10 +11,14 @@ export default function MenuComponent(props) {
       title={item.name}
       subtitle={item.description}
       chevron={false}
+      onPress={() => props.onPress(item.id)}
       leftAvatar={{ source: require("./images/uthappizza.png")}}
     />
   )
   const keyMenuItem = item => item.id.toString();
+
+
+
   return (
     <FlatList 
       data={props.dishes}
