@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Card } from "react-native-elements";
+import { DISHES } from '../shared/dishes'
 
 const RenderDish = ({ dish }) => {
   if (dish != null) {
@@ -17,6 +18,9 @@ const RenderDish = ({ dish }) => {
   return <View></View>;
 };
 
-export default function DishDetailComponent({ dish }) {
-  return <RenderDish dish={dish} />;
+export default function DishDetailComponent({ route }) {
+  const [dishes] = useState(DISHES);
+  const id = route.params.dishID ? route.params.dishID : null;
+
+  return <RenderDish dish={dishes[+id]} />;
 }
