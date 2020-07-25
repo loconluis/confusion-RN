@@ -7,9 +7,18 @@ import Constants from "expo-constants";
 import Home from "./HomeComponent";
 import Menu from "./MenuComponent";
 import DishDetail from "./DishDetailComponent";
+import About from "./AboutComponent";
+import Contact from "./ContactComponent";
 
+/**
+ * Im using new API from React-Navigation
+ * the declaration of is kinda different 
+ * from the version used in this project
+ */
 const MenuNavigator = createStackNavigator();
 const HomeNavigator = createStackNavigator();
+const AboutNavigator = createStackNavigator();
+const ContactNavigator = createStackNavigator();
 const MainNavigator = createDrawerNavigator();
 
 function HomeNavigatorComponent(props) {
@@ -50,6 +59,44 @@ function MenuNavigatorComponent(props) {
   );
 }
 
+function AboutNavigatorComponent(props) {
+  return (
+    <AboutNavigator.Navigator
+      screenOptions={{
+        initialRouteName: "About Us",
+        headerStyle: {
+          backgroundColor: "#512DA8",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <AboutNavigator.Screen name="About Us" component={About} />
+    </AboutNavigator.Navigator>
+  );
+}
+
+function ContactNavigatorComponent(props) {
+  return (
+    <ContactNavigator.Navigator
+      screenOptions={{
+        initialRouteName: "Contact Us",
+        headerStyle: {
+          backgroundColor: "#512DA8",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <ContactNavigator.Screen name="Contact Us" component={Contact} />
+    </ContactNavigator.Navigator>
+  );
+}
+
 export default function MainComponent(props) {
   return (
     <NavigationContainer
@@ -76,6 +123,22 @@ export default function MainComponent(props) {
           options={{
             title: "Menu",
             drawerLabel: "Menu",
+          }}
+        />
+        <MainNavigator.Screen
+          component={AboutNavigatorComponent}
+          name={"About Us"}
+          options={{
+            title: "About Us",
+            drawerLabel: "About Us",
+          }}
+        />
+        <MainNavigator.Screen
+          component={ContactNavigatorComponent}
+          name={"Contact Us"}
+          options={{
+            title: "Contact Us",
+            drawerLabel: "Contact Us",
           }}
         />
       </MainNavigator.Navigator>
