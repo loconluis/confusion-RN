@@ -167,7 +167,6 @@ function ContactNavigatorComponent(props) {
 }
 
 function CustomDrawerComponent(props) {
-  console.log("hola")
   return (
     <ScrollView {...props}>
       <SafeAreaView style={style.container}>
