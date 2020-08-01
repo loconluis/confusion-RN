@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollView, View, Text, FlatList } from "react-native";
+import Loading from "./LoadingComponent";
 import { Card, ListItem } from "react-native-elements";
 import { connect } from "react-redux";
 import { CONTACT } from "../shared/contact";
@@ -54,7 +55,7 @@ const LeaderMemberList = ({ leadership }) => {
   );
 };
 
-const LeaderShipCard = ({ leadership }) => {
+const LeaderShipCard = ({ leadership, isLoading }) => {
   if (leadership != null) {
     return (
       <Card title={"Corporate Leadership"}>
@@ -67,6 +68,21 @@ const LeaderShipCard = ({ leadership }) => {
 };
 
 function AboutComponent(props) {
+  if (props.leaders.isLoading) {
+    return (
+      <ScrollView>
+        <HistoryComponent data={CONTACT} />
+        <Loading />
+      </ScrollView>
+    );
+  } else if (props.leaders.errMess) {
+    return (
+      <ScrollView>
+        <HistoryComponent data={CONTACT} />
+        <Text>{props.leaders.errMess}</Text>
+      </ScrollView>
+    );
+  }
   return (
     <ScrollView>
       <HistoryComponent data={CONTACT} />
