@@ -149,5 +149,5 @@ export const leadersFailed = (errMess) => ({
 
 export const addLeaders = (leaders) => ({
   type: ActionTypes.LEADERS_ADD,
-  payload: dishes,
+  payload: leaders,
 });

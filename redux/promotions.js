@@ -6,7 +6,7 @@ const initialState = {
   promos: [],
 };
 
-export const promotions = (state = initialState, action) => {
+export const promos = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.PROMOS_LOADING:
       return {

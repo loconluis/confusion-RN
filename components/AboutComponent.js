@@ -1,8 +1,16 @@
 import React from "react";
 import { ScrollView, View, Text, FlatList } from "react-native";
 import { Card, ListItem } from "react-native-elements";
+import { connect } from "react-redux";
 import { CONTACT } from "../shared/contact";
 import { LEADERS } from "../shared/leaders";
+import { baseURL } from "../shared/baseUrl";
+
+const mapStateToProps = (state) => {
+  return {
+    leaders: state.leaders,
+  };
+};
 
 const HistoryComponent = ({ data }) => {
   if (data != null) {
@@ -32,14 +40,14 @@ const LeaderMemberList = ({ leadership }) => {
         fontSize: 13,
       }}
       chevron={false}
-      leftAvatar={{ source: require("../assets/images/avatar.png") }}
+      leftAvatar={{ source: { uri: `${baseURL}${item.image}` } }}
     />
   );
   const keyMenuItem = (item) => item.id.toString();
 
   return (
     <FlatList
-      data={leadership}
+      data={leadership.leaders}
       renderItem={renderLeaderItem}
       keyExtractor={keyMenuItem}
     />
@@ -50,7 +58,7 @@ const LeaderShipCard = ({ leadership }) => {
   if (leadership != null) {
     return (
       <Card title={"Corporate Leadership"}>
-        <LeaderMemberList leadership={LEADERS} />
+        <LeaderMemberList leadership={leadership} />
       </Card>
     );
   }
@@ -58,11 +66,13 @@ const LeaderShipCard = ({ leadership }) => {
   return <View></View>;
 };
 
-export default function AboutComponent(props) {
+function AboutComponent(props) {
   return (
     <ScrollView>
       <HistoryComponent data={CONTACT} />
-      <LeaderShipCard leadership={LEADERS} />
+      <LeaderShipCard leadership={props.leaders} />
     </ScrollView>
   );
 }
+
+export default connect(mapStateToProps)(AboutComponent);

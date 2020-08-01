@@ -6,7 +6,7 @@ const initialState = {
   leaders: [],
 };
 
-export const promotions = (state = initialState, action) => {
+export const leaders = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.LEADERS_LOADING:
       return {

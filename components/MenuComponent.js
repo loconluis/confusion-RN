@@ -1,30 +1,37 @@
-import React,{ useState, useEffect }  from "react";
-import { FlatList, View, StyleSheet } from "react-native";
-import { ListItem } from "react-native-elements";
-import { DISHES } from '../shared/dishes'
+import React from "react";
+import { FlatList } from "react-native";
+import { Tile } from "react-native-elements";
+import { connect } from "react-redux";
+import { baseURL } from "../shared/baseUrl";
 
-export default function MenuComponent(props) {
-  let [dishes] = useState(DISHES) 
+const mapStateToProps = (state) => {
+  return {
+    dishes: state.dishes,
+  };
+};
+function MenuComponent(props) {
   // Navigation config
   const { navigate } = props.navigation;
 
   const renderMenuItem = ({ item, index }) => (
-    <ListItem
+    <Tile
       key={index}
       title={item.name}
-      subtitle={item.description}
-      chevron={false}
-      onPress={() => navigate('Details', { dishID: item.id })}
-      leftAvatar={{ source: require("./images/uthappizza.png") }}
+      caption={item.description}
+      featured
+      onPress={() => navigate("Details", { dishID: item.id })}
+      imageSrc={{ uri: `${baseURL}${item.image}` }}
     />
   );
   const keyMenuItem = (item) => item.id.toString();
-  
+
   return (
     <FlatList
-      data={dishes}
+      data={props.dishes.dishes}
       renderItem={renderMenuItem}
       keyExtractor={keyMenuItem}
     />
   );
 }
+
+export default connect(mapStateToProps)(MenuComponent);

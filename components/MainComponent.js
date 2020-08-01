@@ -1,20 +1,43 @@
-import React from "react";
-import { Platform, Image, StyleSheet, ScrollView, View, Text } from "react-native";
+import React, { useEffect } from "react";
+import {
+  Platform,
+  Image,
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   createDrawerNavigator,
-  DrawerContentScrollView,
+  // DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Icon } from "react-native-elements";
 import Constants from "expo-constants";
+import { connect } from "react-redux";
+import {
+  fetchComments,
+  fetchDishes,
+  fetchLeaders,
+  fetchPromos,
+} from "../redux/ActionCreator";
 import Home from "./HomeComponent";
 import Menu from "./MenuComponent";
 import DishDetail from "./DishDetailComponent";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchDishes: () => dispatch(fetchDishes()),
+    fetchComments: () => dispatch(fetchComments()),
+    fetchLeaders: () => dispatch(fetchLeaders()),
+    fetchPromos: () => dispatch(fetchPromos()),
+  };
+};
 
 const MenuNavigator = createStackNavigator();
 const HomeNavigator = createStackNavigator();
@@ -187,7 +210,14 @@ function CustomDrawerComponent(props) {
   );
 }
 
-export default function MainComponent(props) {
+function MainComponent(props) {
+  useEffect(() => {
+    props.fetchComments();
+    props.fetchDishes();
+    props.fetchLeaders();
+    props.fetchPromos();
+  });
+
   return (
     <SafeAreaProvider>
       <NavigationContainer
@@ -266,21 +296,23 @@ const style = StyleSheet.create({
     flex: 1,
   },
   drawerHeader: {
-    backgroundColor: '#512DA8',
+    backgroundColor: "#512DA8",
     height: 140,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   drawerHeaderText: {
-    color: 'white',
+    color: "white",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   drawerImage: {
     margin: 10,
     width: 80,
     height: 60,
-  }
-})
+  },
+});
+
+export default connect(undefined, mapDispatchToProps)(MainComponent);
