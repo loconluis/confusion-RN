@@ -3,11 +3,19 @@ import { View, Text, ScrollView, FlatList } from "react-native";
 import { Card, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 import { baseURL } from "../shared/baseUrl";
+import { postFavorite } from "../redux/ActionCreator";
 
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
     comments: state.comments,
+    favorites: state.favorites,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    postFavorite: (dishID) => dispatch(postFavorite(dishID)),
   };
 };
 
@@ -61,8 +69,13 @@ const RenderComments = ({ comments }) => {
   );
 };
 
-function DishDetailComponent({ route, dishes, comments }) {
-  const [favorites, setFavorites] = useState([]);
+function DishDetailComponent({
+  route,
+  dishes,
+  comments,
+  postFavorite,
+  favorites,
+}) {
   const id = route.params.dishID
     ? route.params.dishID
     : route.params.dishID == 0
@@ -70,7 +83,7 @@ function DishDetailComponent({ route, dishes, comments }) {
     : null;
 
   const markFavorite = (dishID) => {
-    setFavorites(favorites.concat(dishID));
+    postFavorite(dishID);
   };
 
   return (
@@ -87,4 +100,7 @@ function DishDetailComponent({ route, dishes, comments }) {
   );
 }
 
-export default connect(mapStateToProps)(DishDetailComponent);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DishDetailComponent);

@@ -151,3 +151,15 @@ export const addLeaders = (leaders) => ({
   type: ActionTypes.LEADERS_ADD,
   payload: leaders,
 });
+
+// Favorites
+export const postFavorite = (dishID) => (dispatch) => {
+  setTimeout(() => {
+    dispatch(addFavorite(dishID));
+  }, 2000);
+};
+
+export const addFavorite = (dishID) => ({
+  type: ActionTypes.FAVORITE_ADD,
+  payload: dishID,
+});
