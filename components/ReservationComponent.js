@@ -7,6 +7,7 @@ import {
   Picker,
   Switch,
   Button,
+  Modal,
 } from "react-native";
 import { Card } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
@@ -15,18 +16,17 @@ const ReservationComponent = (props) => {
   const [guest, setGuest] = useState(1);
   const [smoking, setSmoking] = useState(false);
   const [date, setDate] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const handlePickerOnChange = (itemValue, itemIndex) => {
     setGuest(itemValue);
   };
-
   const handleSwitchOnChange = (value) => {
     setSmoking(value);
   };
   const handleDatePickerOnChange = (date) => {
     setDate(date);
   };
-
   const handleReservation = () => {
     let state = {
       guest,
@@ -34,9 +34,19 @@ const ReservationComponent = (props) => {
       date,
     };
     console.log(state);
+    toggleModal();
+  };
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+  const resetForm = () => {
     setGuest(1);
     setSmoking(false);
     setGuest("");
+  };
+  const checkandCleanData = () => {
+    toggleModal();
+    resetForm();
   };
   return (
     <ScrollView>
@@ -97,6 +107,23 @@ const ReservationComponent = (props) => {
           accessibilityLabel="Learn more about this purple button"
         />
       </View>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={showModal}
+        // onDismiss={checkandCleanData}
+        onRequestClose={checkandCleanData}
+      >
+        <View style={style.modal}>
+          <Text style={style.modalTitle}>Your Reservation</Text>
+          <Text style={style.modalText}>Number of Guests: {guest}</Text>
+          <Text style={style.modalText}>
+            Smoking? : {smoking === false ? "Yes" : "No"}
+          </Text>
+          <Text style={style.modalText}>Date and Time: {date}</Text>
+          <Button onPress={checkandCleanData} color="#512DA8" title="Close" />
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -115,6 +142,23 @@ const style = StyleSheet.create({
   },
   formItem: {
     flex: 1,
+  },
+  modal: {
+    justifyContent: "center",
+    margin: 20,
+    marginTop: 50,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    backgroundColor: "#512DA8",
+    textAlign: "center",
+    color: "white",
+    marginBottom: 20,
+  },
+  modalText: {
+    fontSize: 18,
+    margin: 10,
   },
 });
 
