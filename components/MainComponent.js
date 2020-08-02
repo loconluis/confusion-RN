@@ -29,6 +29,7 @@ import Menu from "./MenuComponent";
 import DishDetail from "./DishDetailComponent";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
+import Reservation from "./ReservationComponent";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -43,6 +44,7 @@ const MenuNavigator = createStackNavigator();
 const HomeNavigator = createStackNavigator();
 const AboutNavigator = createStackNavigator();
 const ContactNavigator = createStackNavigator();
+const ReservationNavigator = createStackNavigator();
 const MainNavigator = createDrawerNavigator();
 
 function HomeNavigatorComponent(props) {
@@ -189,6 +191,42 @@ function ContactNavigatorComponent(props) {
   );
 }
 
+function ReservationNavigatorComponent(props) {
+  const navigationOptions = {
+    headerLeft: () => {
+      return (
+        <Icon
+          name="menu"
+          size={24}
+          color="white"
+          style={{ paddingLeft: 15 }}
+          onPress={() => props.navigation.toggleDrawer()}
+        />
+      );
+    },
+  };
+  return (
+    <ReservationNavigator.Navigator
+      screenOptions={{
+        initialRouteName: "Reservation",
+        headerStyle: {
+          backgroundColor: "#512DA8",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <ReservationNavigator.Screen
+        name="Reservation"
+        component={Reservation}
+        options={navigationOptions}
+      />
+    </ReservationNavigator.Navigator>
+  );
+}
+
 function CustomDrawerComponent(props) {
   return (
     <ScrollView {...props}>
@@ -264,6 +302,22 @@ function MainComponent(props) {
                   name="info-circle"
                   type="font-awesome"
                   size={24}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <MainNavigator.Screen
+            component={ReservationNavigatorComponent}
+            name={"Reservation"}
+            options={{
+              title: "Reservation",
+              drawerLabel: "Reservation",
+              drawerIcon: ({ color }) => (
+                <Icon
+                  name="address-card-o"
+                  type="font-awesome"
+                  size={22}
                   color={color}
                 />
               ),
