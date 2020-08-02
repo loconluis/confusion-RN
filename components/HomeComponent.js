@@ -14,7 +14,6 @@ const mapStateToProps = (state) => {
 };
 
 function RenderItem({ item, isLoading, errMess }) {
-  console.log("isLoading inside renderItem", isLoading);
   if (isLoading) {
     return <Loading />;
   } else if (errMess) {

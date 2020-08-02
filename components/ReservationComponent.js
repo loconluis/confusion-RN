@@ -33,7 +33,6 @@ const ReservationComponent = (props) => {
       smoking,
       date,
     };
-    console.log(state);
     toggleModal();
   };
   const toggleModal = () => {

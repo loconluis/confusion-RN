@@ -16,7 +16,6 @@ const style = StyleSheet.create({
 
 export default class LoadingComponent extends Component {
   render() {
-    console.log("me llamo LOADING");
     return (
       <View style={style.View}>
         <ActivityIndicator size="large" color="#512DA8">

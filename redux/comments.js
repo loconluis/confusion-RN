@@ -29,6 +29,15 @@ export const comments = (state = initialState, action) => {
         errMess: action.payload,
         comments: [],
       };
+    case ActionTypes.COMMENT_ADD:
+      let comment = {
+        id: state.comments.length + 1,
+        ...action.payload,
+      };
+      return {
+        ...state,
+        comments: [...state.comments, comment],
+      };
     default:
       return state;
   }
