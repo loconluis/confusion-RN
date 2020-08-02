@@ -74,7 +74,9 @@ const RenderComments = ({ comments }) => {
       <ScrollView>
         <View key={index} style={{ margin: 10 }}>
           <Text style={{ fontSize: 14 }}>{item.comment}</Text>
-          <Text style={{ fontSize: 12 }}>{item.rating} Stars</Text>
+          <View style={{ flexDirection: 'row', paddingTop: 5, paddingBottom: 5 }}>
+            <Rating readonly startingValue={item.rating} imageSize={10} />
+          </View>
           <Text style={{ fontSize: 12 }}>
             {"-- " + item.author + ", " + item.date}
           </Text>
