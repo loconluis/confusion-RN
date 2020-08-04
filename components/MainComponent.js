@@ -30,6 +30,7 @@ import DishDetail from "./DishDetailComponent";
 import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import Reservation from "./ReservationComponent";
+import Favorite from "./FavoriteComponent";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -45,6 +46,7 @@ const HomeNavigator = createStackNavigator();
 const AboutNavigator = createStackNavigator();
 const ContactNavigator = createStackNavigator();
 const ReservationNavigator = createStackNavigator();
+const FavoriteNavigator = createStackNavigator();
 const MainNavigator = createDrawerNavigator();
 
 function HomeNavigatorComponent(props) {
@@ -227,6 +229,42 @@ function ReservationNavigatorComponent(props) {
   );
 }
 
+function FavoriteNavigatorComponent(props) {
+  const navigationOptions = {
+    headerLeft: () => {
+      return (
+        <Icon
+          name="menu"
+          size={24}
+          color="white"
+          style={{ paddingLeft: 15 }}
+          onPress={() => props.navigation.toggleDrawer()}
+        />
+      );
+    },
+  };
+  return (
+    <FavoriteNavigator.Navigator
+      screenOptions={{
+        initialRouteName: "Favorites",
+        headerStyle: {
+          backgroundColor: "#512DA8",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <FavoriteNavigator.Screen
+        name="Favorites"
+        component={Favorite}
+        options={navigationOptions}
+      />
+    </FavoriteNavigator.Navigator>
+  );
+}
+
 function CustomDrawerComponent(props) {
   return (
     <ScrollView {...props}>
@@ -316,6 +354,22 @@ function MainComponent(props) {
               drawerIcon: ({ color }) => (
                 <Icon
                   name="address-card-o"
+                  type="font-awesome"
+                  size={22}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <MainNavigator.Screen
+            component={FavoriteNavigatorComponent}
+            name={"Favorites"}
+            options={{
+              title: "Favorites",
+              drawerLabel: "Favorites",
+              drawerIcon: ({ color }) => (
+                <Icon
+                  name="heart"
                   type="font-awesome"
                   size={22}
                   color={color}
