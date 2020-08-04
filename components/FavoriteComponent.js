@@ -23,7 +23,7 @@ const FavoriteComponent = (props) => {
         subtitle={item.description}
         chevron={false}
         onPress={() => navigate("Details", { dishID: item.id })}
-        leftAvatar={{ source: `${baseURL}${item.image}` }}
+        leftAvatar={{ source: {uri: `${baseURL}${item.image}` }}}
       />
     );
   };
