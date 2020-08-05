@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Card, Icon, Rating, Input } from "react-native-elements";
+import * as Animatable from "react-native-animatable";
 import { connect } from "react-redux";
 import { baseURL } from "../shared/baseUrl";
 import { postFavorite, postComment } from "../redux/ActionCreator";
@@ -31,37 +32,39 @@ const mapDispatchToProps = (dispatch) => {
 const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
   if (dish != null) {
     return (
-      <Card
-        featuredTitle={dish.name}
-        image={{ uri: `${baseURL}${dish.image}` }}
-      >
-        <Text style={{ margin: 10 }}>{dish.description}</Text>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-          }}
+      <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+        <Card
+          featuredTitle={dish.name}
+          image={{ uri: `${baseURL}${dish.image}` }}
         >
-          <Icon
-            raised
-            reverse
-            name={favorite ? "heart" : "heart-o"}
-            type="font-awesome"
-            color="#f50"
-            onPress={() => {
-              favorite ? console.log("Already Favorite") : onPress();
+          <Text style={{ margin: 10 }}>{dish.description}</Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
             }}
-          />
-          <Icon
-            reverse
-            name="pencil"
-            type="font-awesome"
-            color="#512DA8"
-            onPress={() => onLeaveAComment()}
-          />
-        </View>
-      </Card>
+          >
+            <Icon
+              raised
+              reverse
+              name={favorite ? "heart" : "heart-o"}
+              type="font-awesome"
+              color="#f50"
+              onPress={() => {
+                favorite ? console.log("Already Favorite") : onPress();
+              }}
+            />
+            <Icon
+              reverse
+              name="pencil"
+              type="font-awesome"
+              color="#512DA8"
+              onPress={() => onLeaveAComment()}
+            />
+          </View>
+        </Card>
+      </Animatable.View>
     );
   }
 
@@ -74,7 +77,9 @@ const RenderComments = ({ comments }) => {
       <ScrollView>
         <View key={index} style={{ margin: 10 }}>
           <Text style={{ fontSize: 14 }}>{item.comment}</Text>
-          <View style={{ flexDirection: 'row', paddingTop: 5, paddingBottom: 5 }}>
+          <View
+            style={{ flexDirection: "row", paddingTop: 5, paddingBottom: 5 }}
+          >
             <Rating readonly startingValue={item.rating} imageSize={10} />
           </View>
           <Text style={{ fontSize: 12 }}>
@@ -85,13 +90,15 @@ const RenderComments = ({ comments }) => {
     );
   };
   return (
-    <Card title="Comments">
-      <FlatList
-        data={comments}
-        renderItem={renderCommentItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
-    </Card>
+    <Animatable.View animation="fadeInUp" duration={2000} delay={1000}>
+      <Card title="Comments">
+        <FlatList
+          data={comments}
+          renderItem={renderCommentItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+      </Card>
+    </Animatable.View>
   );
 };
 
@@ -176,7 +183,7 @@ function DishDetailComponent({
   comments,
   postFavorite,
   favorites,
-  postComment
+  postComment,
 }) {
   // Handle State
   const [showModal, setShowModal] = useState(false);

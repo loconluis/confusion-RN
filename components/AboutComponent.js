@@ -2,9 +2,9 @@ import React from "react";
 import { ScrollView, View, Text, FlatList } from "react-native";
 import Loading from "./LoadingComponent";
 import { Card, ListItem } from "react-native-elements";
+import * as Animatable from "react-native-animatable";
 import { connect } from "react-redux";
 import { CONTACT } from "../shared/contact";
-import { LEADERS } from "../shared/leaders";
 import { baseURL } from "../shared/baseUrl";
 
 const mapStateToProps = (state) => {
@@ -78,15 +78,19 @@ function AboutComponent(props) {
   } else if (props.leaders.errMess) {
     return (
       <ScrollView>
-        <HistoryComponent data={CONTACT} />
-        <Text>{props.leaders.errMess}</Text>
+        <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+          <HistoryComponent data={CONTACT} />
+          <Text>{props.leaders.errMess}</Text>
+        </Animatable.View>
       </ScrollView>
     );
   }
   return (
     <ScrollView>
-      <HistoryComponent data={CONTACT} />
-      <LeaderShipCard leadership={props.leaders} />
+      <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+        <HistoryComponent data={CONTACT} />
+        <LeaderShipCard leadership={props.leaders} />
+      </Animatable.View>
     </ScrollView>
   );
 }
