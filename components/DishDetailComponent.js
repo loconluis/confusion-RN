@@ -35,7 +35,9 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
   const viewAnimatedRef = useRef(null);
   const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
     if (dx < -200) {
-      return true;
+      return 'favorite';
+    } else if((dx > 200 )) {
+      return 'comment'
     } else {
       return false;
     }
@@ -53,7 +55,7 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
         );
     },
     onPanResponderEnd: (e, gestureState) => {
-      if (recognizeDrag(gestureState)) {
+      if (recognizeDrag(gestureState) === 'favorite') {
         Alert.alert(
           "Add to Favorites?",
           `Are you sure you wish to add ${dish.name} to your favorites`,
@@ -71,6 +73,8 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
           ],
           { cancelable: false }
         );
+      } else if (recognizeDrag(gestureState) === 'comment') {
+        onLeaveAComment()
       }
     },
   });

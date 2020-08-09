@@ -8,8 +8,10 @@ import {
   Switch,
   Button,
   Modal,
+  Alert,
 } from "react-native";
-import { Card } from "react-native-elements";
+// import { Card } from "react-native-elements";
+import * as Animatable from "react-native-animatable";
 import DatePicker from "react-native-datepicker";
 
 const ReservationComponent = (props) => {
@@ -33,7 +35,23 @@ const ReservationComponent = (props) => {
       smoking,
       date,
     };
-    toggleModal();
+    Alert.alert(
+      "Your reservation OK?",
+      `Number of Guest: ${guest}\n Smoking?: ${smoking}\n Date and Time: ${date}\n`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => resetForm(),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => resetForm(),
+        },
+      ],
+      { cancelable: false }
+    );
+    // toggleModal();
   };
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -42,6 +60,7 @@ const ReservationComponent = (props) => {
     setGuest(1);
     setSmoking(false);
     setGuest("");
+    setDate(null)
   };
   const checkandCleanData = () => {
     toggleModal();
@@ -49,80 +68,82 @@ const ReservationComponent = (props) => {
   };
   return (
     <ScrollView>
-      <View style={style.formRow}>
-        <Text style={style.formLabel}> Number of Guests</Text>
-        <Picker
-          style={style.formItem}
-          selectedValue={guest}
-          onValueChange={handlePickerOnChange}
-        >
-          <Picker.Item label="1" value="1" />
-          <Picker.Item label="2" value="2" />
-          <Picker.Item label="3" value="3" />
-          <Picker.Item label="4" value="4" />
-          <Picker.Item label="5" value="5" />
-          <Picker.Item label="6" value="6" />
-        </Picker>
-      </View>
-      <View style={style.formRow}>
-        <Text style={style.formLabel}>Smoking/Non Smoking</Text>
-        <Switch
-          style={style.formItem}
-          value={smoking}
-          onTintColor="#512DA8"
-          onValueChange={handleSwitchOnChange}
-        />
-      </View>
-      <View style={style.formRow}>
-        <Text style={style.formLabel}>Date and Time</Text>
-        <DatePicker
-          style={{ flex: 2, marginRigth: 20 }}
-          date={date}
-          format=""
-          mode="datetime"
-          placeholder="Select date and time"
-          minDate="2020-01-01"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: "absolute",
-              left: 0,
-              top: 4,
-              marginLeft: 0,
-            },
-            dateInput: {
-              marginLeft: 36,
-            },
-          }}
-          onDateChange={handleDatePickerOnChange}
-        />
-      </View>
-      <View style={style.formRow}>
-        <Button
-          title="Reserve"
-          color="#512DA8"
-          onPress={handleReservation}
-          accessibilityLabel="Learn more about this purple button"
-        />
-      </View>
-      <Modal
-        animationType="slide"
-        transparent={false}
-        visible={showModal}
-        // onDismiss={checkandCleanData}
-        onRequestClose={checkandCleanData}
-      >
-        <View style={style.modal}>
-          <Text style={style.modalTitle}>Your Reservation</Text>
-          <Text style={style.modalText}>Number of Guests: {guest}</Text>
-          <Text style={style.modalText}>
-            Smoking? : {smoking === false ? "Yes" : "No"}
-          </Text>
-          <Text style={style.modalText}>Date and Time: {date}</Text>
-          <Button onPress={checkandCleanData} color="#512DA8" title="Close" />
+      <Animatable.View animation="zoomIn" duration={1500} delay={800}>
+        <View style={style.formRow}>
+          <Text style={style.formLabel}> Number of Guests</Text>
+          <Picker
+            style={style.formItem}
+            selectedValue={guest}
+            onValueChange={handlePickerOnChange}
+          >
+            <Picker.Item label="1" value="1" />
+            <Picker.Item label="2" value="2" />
+            <Picker.Item label="3" value="3" />
+            <Picker.Item label="4" value="4" />
+            <Picker.Item label="5" value="5" />
+            <Picker.Item label="6" value="6" />
+          </Picker>
         </View>
-      </Modal>
+        <View style={style.formRow}>
+          <Text style={style.formLabel}>Smoking/Non Smoking</Text>
+          <Switch
+            style={style.formItem}
+            value={smoking}
+            onTintColor="#512DA8"
+            onValueChange={handleSwitchOnChange}
+          />
+        </View>
+        <View style={style.formRow}>
+          <Text style={style.formLabel}>Date and Time</Text>
+          <DatePicker
+            style={{ flex: 2, marginRigth: 20 }}
+            date={date}
+            format=""
+            mode="datetime"
+            placeholder="Select date and time"
+            minDate="2020-01-01"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0,
+              },
+              dateInput: {
+                marginLeft: 36,
+              },
+            }}
+            onDateChange={handleDatePickerOnChange}
+          />
+        </View>
+        <View style={style.formRow}>
+          <Button
+            title="Reserve"
+            color="#512DA8"
+            onPress={handleReservation}
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+        {/*<Modal
+          animationType="slide"
+          transparent={false}
+          visible={showModal}
+          // onDismiss={checkandCleanData}
+          onRequestClose={checkandCleanData}
+        >
+          <View style={style.modal}>
+            <Text style={style.modalTitle}>Your Reservation</Text>
+            <Text style={style.modalText}>Number of Guests: {guest}</Text>
+            <Text style={style.modalText}>
+              Smoking? : {smoking === false ? "Yes" : "No"}
+            </Text>
+            <Text style={style.modalText}>Date and Time: {date}</Text>
+            <Button onPress={checkandCleanData} color="#512DA8" title="Close" />
+          </View>
+        </Modal>*/}
+      </Animatable.View>
     </ScrollView>
   );
 };

@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import logger from "redux-logger";
 import { persistStore, persistCombineReducers } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+// import AsyncStorage from '@react-native-community/async-storage';
 import { dishes } from "./dishes";
 import { comments } from "./comments";
 import { promos } from "./promotions";
@@ -12,7 +13,7 @@ import { favorites } from "./favorites";
 export const ConfigureStore = () => {
   const config = {
     key: "root",
-    storage,
+    storage: storage,
     debug: true,
   };
 
