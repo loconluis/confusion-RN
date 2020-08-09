@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -32,6 +32,7 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
+  const viewAnimatedRef = useRef(null);
   const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
     if (dx < -200) {
       return true;
@@ -43,6 +44,13 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: (e, gestureState) => {
       return true;
+    },
+    onPanResponderGrant: () => {
+      viewAnimatedRef.current
+        .rubberBand(1000)
+        .then((endState) =>
+          console.log(endState.finished ? "Finished" : "Cancelled")
+        );
     },
     onPanResponderEnd: (e, gestureState) => {
       if (recognizeDrag(gestureState)) {
@@ -70,6 +78,7 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
   if (dish != null) {
     return (
       <Animatable.View
+        ref={viewAnimatedRef}
         animation="fadeInDown"
         duration={2000}
         delay={1000}
