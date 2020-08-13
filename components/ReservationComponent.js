@@ -10,6 +10,8 @@ import {
   Modal,
   Alert,
 } from "react-native";
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 // import { Card } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import DatePicker from "react-native-datepicker";
@@ -46,7 +48,10 @@ const ReservationComponent = (props) => {
         },
         {
           text: "OK",
-          onPress: () => resetForm(),
+          onPress: () => {
+            presentLocalNotification(date)
+            resetForm()
+          },
         },
       ],
       { cancelable: false }
@@ -60,7 +65,37 @@ const ReservationComponent = (props) => {
     setGuest(1);
     setSmoking(false);
     setGuest("");
-    setDate(null)
+    setDate(null);
+  };
+
+  const obtainNotificationPermissions = async () => {
+    let permission = await Permissions.getAsync(
+      Permissions.USER_FACING_NOTIFICATIONS
+    );
+    if (permission.status !== "granted") {
+      permission = await Permissions.askAsync(
+        Permissions.USER_FACING_NOTIFICATIONS
+      );
+      if (permission.status !== "granted") {
+        Alert.alert("Permission not granted to show notifications");
+      }
+    }
+  };
+
+  const presentLocalNotification = async (date) => {
+    await obtainNotificationPermissions();
+    Notifications.presentNotificationAsync({
+      title: "Your Reservation",
+      body: `Reservation for ${date} requested.`,
+      ios: {
+        sound: true,
+      },
+      android: {
+        sound: true,
+        vibrate: true,
+        color: "#512DA8",
+      },
+    });
   };
   const checkandCleanData = () => {
     toggleModal();
