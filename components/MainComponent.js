@@ -31,6 +31,7 @@ import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import Reservation from "./ReservationComponent";
 import Favorite from "./FavoriteComponent";
+import Login from "./LoginComponent";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -47,6 +48,7 @@ const AboutNavigator = createStackNavigator();
 const ContactNavigator = createStackNavigator();
 const ReservationNavigator = createStackNavigator();
 const FavoriteNavigator = createStackNavigator();
+const LoginNavigator = createStackNavigator();
 const MainNavigator = createDrawerNavigator();
 
 function HomeNavigatorComponent(props) {
@@ -264,6 +266,41 @@ function FavoriteNavigatorComponent(props) {
     </FavoriteNavigator.Navigator>
   );
 }
+function LoginNavigatorComponent(props) {
+  const navigationOptions = {
+    headerLeft: () => {
+      return (
+        <Icon
+          name="menu"
+          size={24}
+          color="white"
+          style={{ paddingLeft: 15 }}
+          onPress={() => props.navigation.toggleDrawer()}
+        />
+      );
+    },
+  };
+  return (
+    <LoginNavigator.Navigator
+      screenOptions={{
+        initialRouteName: "Login",
+        headerStyle: {
+          backgroundColor: "#512DA8",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
+      <LoginNavigator.Screen
+        name="Login"
+        component={Login}
+        options={navigationOptions}
+      />
+    </LoginNavigator.Navigator>
+  );
+}
 
 function CustomDrawerComponent(props) {
   return (
@@ -386,6 +423,22 @@ function MainComponent(props) {
               drawerIcon: ({ color }) => (
                 <Icon
                   name="address-card"
+                  type="font-awesome"
+                  size={22}
+                  color={color}
+                />
+              ),
+            }}
+          />
+          <MainNavigator.Screen
+            component={LoginNavigatorComponent}
+            name={"Login"}
+            options={{
+              title: "Login",
+              drawerLabel: "Login",
+              drawerIcon: ({ color }) => (
+                <Icon
+                  name="key"
                   type="font-awesome"
                   size={22}
                   color={color}
