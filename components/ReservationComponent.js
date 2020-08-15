@@ -15,6 +15,7 @@ import * as Permissions from "expo-permissions";
 // import { Card } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import DatePicker from "react-native-datepicker";
+import * as Calendar from "expo-calendar";
 
 const ReservationComponent = (props) => {
   const [guest, setGuest] = useState(1);
@@ -49,13 +50,15 @@ const ReservationComponent = (props) => {
         {
           text: "OK",
           onPress: () => {
-            presentLocalNotification(date)
-            resetForm()
+            presentLocalNotification(date);
+            resetForm();
           },
         },
       ],
       { cancelable: false }
     );
+    let _date = new Date(date);
+    obtainCalendarPermission("Con Fusion Table Reservation", _date);
     // toggleModal();
   };
   const toggleModal = () => {
@@ -66,6 +69,43 @@ const ReservationComponent = (props) => {
     setSmoking(false);
     setGuest("");
     setDate(null);
+  };
+
+  const obtainCalendarPermission = async (
+    title = "Con Fusion Table Reservation",
+    date,
+    location = "121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong",
+    timeZone = "Asia/Hong_Kong"
+  ) => {
+    const { status } = await Calendar.requestCalendarPermissionsAsync();
+    if (status === "granted") {
+      // Ios Support
+      let defaultCalendar = await Calendar.getDefaultCalendarAsync();
+      addReservationToCalendar({
+        id: defaultCalendar.id,
+        title,
+        startDate: date,
+        endDate: date,
+        location,
+        timeZone,
+      });
+    }
+  };
+
+  const addReservationToCalendar = async ({
+    id,
+    title,
+    startDate,
+    endDate,
+    notes,
+  }) => {
+    let calendarID = await Calendar.createEventAsync(id, {
+      title,
+      startDate,
+      endDate,
+      notes,
+    });
+    return calendarID;
   };
 
   const obtainNotificationPermissions = async () => {

@@ -143,6 +143,23 @@ function RegisterComponent() {
     }
   };
 
+  const getImageFromGallery = async () => {
+    const cameraRollPermission = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+
+    if (cameraRollPermission.status === "granted") {
+      let capturedImage = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+
+      if (!capturedImage.cancelled) {
+        processImage(capturedImage.uri);
+      }
+    }
+  };
+
   const processImage = async (imageURI) => {
     let processedImage = await ImageManipulator.manipulateAsync(
       imageURI,
@@ -175,6 +192,10 @@ function RegisterComponent() {
           style={style.image}
         />
         <Button title="Camera" onPress={() => getImageFromCamera()} />
+        <Button
+          title="Camera Roll"
+          onPress={() => getImageFromGallery()}
+        />
       </View>
       <Input
         placeholder="Username"
