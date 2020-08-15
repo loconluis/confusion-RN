@@ -6,7 +6,9 @@ import {
   ScrollView,
   View,
   Text,
+  ToastAndroid,
 } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
@@ -329,7 +331,39 @@ function MainComponent(props) {
     props.fetchDishes();
     props.fetchLeaders();
     props.fetchPromos();
+    // NetInfo.fetch().then((state) => {
+    //   ToastAndroid.show(
+    //     `Initial Netwrk Connectivity Type: ${state.type}, effectiveType: ${state.details.cellularGeneration}`,
+    //     ToastAndroid.LONG
+    //   );
+    // });
+    // NetInfo.addEventListener("connectionChange", handleConnectivityChange);
   });
+
+  // let handleConnectivityChange = (connectionINFO) => {
+  //   switch (connectionINFO.type) {
+  //     case "none":
+  //       ToastAndroid.show("You are now offline!", ToastAndroid.LONG);
+  //       break;
+  //     case "wifi":
+  //       ToastAndroid.show("You are now connected to WiFi!", ToastAndroid.LONG);
+  //       break;
+  //     case "cellular":
+  //       ToastAndroid.show(
+  //         "You are now connected to Cellular!",
+  //         ToastAndroid.LONG
+  //       );
+  //       break;
+  //     case "unknown":
+  //       ToastAndroid.show(
+  //         "You now have unknown connection!",
+  //         ToastAndroid.LONG
+  //       );
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   return (
     <SafeAreaProvider>
@@ -437,12 +471,7 @@ function MainComponent(props) {
               title: "Login",
               drawerLabel: "Login",
               drawerIcon: ({ color }) => (
-                <Icon
-                  name="key"
-                  type="font-awesome"
-                  size={22}
-                  color={color}
-                />
+                <Icon name="key" type="font-awesome" size={22} color={color} />
               ),
             }}
           />
