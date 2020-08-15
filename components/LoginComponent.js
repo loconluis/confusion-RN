@@ -4,6 +4,8 @@ import { Icon, Input, CheckBox, Button } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { Asset } from "expo-asset";
+import * as ImageManipulator from "expo-image-manipulator";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { baseURL } from "../shared/baseUrl";
 
@@ -136,9 +138,18 @@ function RegisterComponent() {
       });
 
       if (!capturedImage.cancelled) {
-        setImageURL(capturedImage.uri);
+        processImage(capturedImage.uri);
       }
     }
+  };
+
+  const processImage = async (imageURI) => {
+    let processedImage = await ImageManipulator.manipulateAsync(
+      imageURI,
+      [{ resize: { width: 400 } }],
+      { format: "png" }
+    );
+    setImageURL(processedImage.uri);
   };
 
   const toggleCheckBox = () => {
