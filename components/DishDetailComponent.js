@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Alert,
   PanResponder,
+  Share,
 } from "react-native";
 import { Card, Icon, Rating, Input } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
@@ -35,9 +36,9 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
   const viewAnimatedRef = useRef(null);
   const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
     if (dx < -200) {
-      return 'favorite';
-    } else if((dx > 200 )) {
-      return 'comment'
+      return "favorite";
+    } else if (dx > 200) {
+      return "comment";
     } else {
       return false;
     }
@@ -55,7 +56,7 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
         );
     },
     onPanResponderEnd: (e, gestureState) => {
-      if (recognizeDrag(gestureState) === 'favorite') {
+      if (recognizeDrag(gestureState) === "favorite") {
         Alert.alert(
           "Add to Favorites?",
           `Are you sure you wish to add ${dish.name} to your favorites`,
@@ -73,11 +74,20 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
           ],
           { cancelable: false }
         );
-      } else if (recognizeDrag(gestureState) === 'comment') {
-        onLeaveAComment()
+      } else if (recognizeDrag(gestureState) === "comment") {
+        onLeaveAComment();
       }
     },
   });
+
+  const shareDish = (title, message, url) => {
+    Share.share(
+      { title, message: `${title}: ${message} ${url}`, url },
+      {
+        dialogTitle: `Share ${title}`,
+      }
+    );
+  };
 
   if (dish != null) {
     return (
@@ -116,6 +126,14 @@ const RenderDish = ({ dish, favorite, onPress, onLeaveAComment }) => {
               type="font-awesome"
               color="#512DA8"
               onPress={() => onLeaveAComment()}
+            />
+            <Icon
+              raised
+              reverse
+              name="share"
+              type="font-awesome"
+              color="#3EB489"
+              onPress={() => shareDish(dish.name, dish.description, baseURL + dish.image)}
             />
           </View>
         </Card>
